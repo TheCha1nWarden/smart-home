@@ -3,6 +3,7 @@ package smart.home.authservice.security;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.Claims;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -11,8 +12,10 @@ import java.util.Date;
 public class JwtUtil {
 
     // Секретный ключ для подписи токена
-    private final String secretKey = "yourSecretasdqewjldsandmhqqwjendsbahjsdbasmd";
-    private final long expirationTime = 86400000; // Время действия токена (1 день)
+    @Value("${jwt.secret.key}")
+    private String secretKey;
+
+    private final long expirationTime = 120000; // Время действия токена (2 минуты)
 
     // Генерация JWT токена
     public String generateToken(String username, String role) {
