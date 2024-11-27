@@ -17,7 +17,6 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests(auth -> auth
-//                        .requestMatchers("/auth/**").permitAll()  // Разрешаем доступ к endpoint-аутентификации
                         .anyRequest().authenticated()  // Все остальные запросы требуют аутентификации
                 );
 
