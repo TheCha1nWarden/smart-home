@@ -17,8 +17,13 @@ public class HelloController {
 
     @GetMapping("/ok")
     public String ok() {
-        deviceKafkaProducer.sendDeviceStatus(new Device("name", "type", Status.ON, 123l));
         return "OK";
+    }
+
+    @GetMapping("/test-kafka")
+    public String testKafka() {
+        deviceKafkaProducer.sendDeviceStatus(new Device("name", "type", Status.ON, 123l));
+        return "SUCCESS";
     }
 
 }
