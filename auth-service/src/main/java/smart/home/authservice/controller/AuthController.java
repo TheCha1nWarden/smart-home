@@ -39,13 +39,14 @@ public class AuthController {
     // Аутентификация пользователя и генерация JWT токена
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestParam String username,
-                                   @RequestParam String password) {
+                                   @RequestParam String password,
+                                   @RequestParam Boolean rememberUserFlag) {
         Optional<User> userOptional = userService.findByUsername(username);
 
         // Проверка существования пользователя и соответствия пароля
         if (userOptional.isPresent() && passwordEncoder.matches(password, userOptional.get().getPassword())) {
             // Генерация JWT токена при успешной аутентификации
-            String token = jwtUtil.generateToken(username, userOptional.get().getRole());
+            String token = jwtUtil.generateToken(username, userOptional.get().getRole(), rememberUserFlag);
             return ResponseEntity.ok("Bearer " + token);
         } else {
             return ResponseEntity.status(401).body("Invalid credentials");

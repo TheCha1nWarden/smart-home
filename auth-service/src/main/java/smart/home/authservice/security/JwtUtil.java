@@ -15,15 +15,16 @@ public class JwtUtil {
     @Value("${jwt.secret.key}")
     private String secretKey;
 
-    private final long expirationTime = 120000; // Время действия токена (2 минуты)
+    private final long shortExpirationTime = 900000; // Время действия короткого токена (15 минуты)
+    private final long longExpirationTime = 2592000000L; // Время действия долгого токена (30 дней)
 
     // Генерация JWT токена
-    public String generateToken(String username, String role) {
+    public String generateToken(String username, String role, Boolean rememberUserFlag) {
         return Jwts.builder()
                 .setSubject(username)
                 .claim("role", role)  // Добавление роли в токен
                 .setIssuedAt(new Date())  // Дата создания токена
-                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))  // Дата истечения
+                .setExpiration(new Date(System.currentTimeMillis() + (rememberUserFlag ? longExpirationTime : shortExpirationTime)))  // Дата истечения
                 .signWith(SignatureAlgorithm.HS256, secretKey)  // Подпись токена
                 .compact();
     }
