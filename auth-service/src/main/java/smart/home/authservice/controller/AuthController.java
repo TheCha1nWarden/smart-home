@@ -40,7 +40,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestParam String username,
                                    @RequestParam String password,
-                                   @RequestParam Boolean rememberUserFlag) {
+                                   @RequestParam(defaultValue = "false") Boolean rememberUserFlag) {
         Optional<User> userOptional = userService.findByUsername(username);
 
         // Проверка существования пользователя и соответствия пароля
