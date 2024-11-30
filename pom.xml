@@ -16,8 +16,11 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>auth-service</module>
         <module>simple-service</module>
+        <module>auth-service</module>
+        <module>device-service</module>
+        <module>integration-service</module>
+        <module>notification-service</module>
     </modules>
 
     <properties>
