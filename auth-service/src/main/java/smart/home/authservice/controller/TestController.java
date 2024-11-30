@@ -18,7 +18,7 @@ public class TestController {
 
     @GetMapping("/add")
     public String add() {
-        testRepo.save(new User("name" + new Random().nextDouble(), "pass", "role"));
+        testRepo.save(new User("name" + new Random().nextDouble(), "pass", "email", "role"));
         return "success";
     }
 

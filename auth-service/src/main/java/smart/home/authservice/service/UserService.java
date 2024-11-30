@@ -18,11 +18,12 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     // Регистрация нового пользователя
-    public User registerUser(String username, String password, String role) {
+    public User registerUser(String username, String password, String email, String role) {
         User user = new User();
         user.setUsername(username);
         // Хеширование пароля перед сохранением в БД
         user.setPassword(passwordEncoder.encode(password));
+        user.setEmail(email);
         user.setRole(role);
         return userRepository.save(user);
     }

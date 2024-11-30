@@ -30,9 +30,10 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestParam String username,
                                       @RequestParam String password,
+                                      @RequestParam String email,
                                       @RequestParam String role) {
         // Создание нового пользователя
-        User user = userService.registerUser(username, password, role);
+        User user = userService.registerUser(username, password, email, role);
         return ResponseEntity.ok("User registered successfully: " + user.getUsername());
     }
 
