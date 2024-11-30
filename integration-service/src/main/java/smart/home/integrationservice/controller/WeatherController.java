@@ -1,6 +1,7 @@
 package smart.home.integrationservice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,8 +17,8 @@ public class WeatherController {
     private WeatherService weatherService;
 
     @PostMapping("/get")
-    public Object getWeather(@RequestBody WeatherRequest weatherRequest) {
-        return weatherService.getWeather(weatherRequest);
+    public ResponseEntity<?> getWeather(@RequestBody WeatherRequest weatherRequest) {
+        return weatherService.getWeather(weatherRequest).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
 }

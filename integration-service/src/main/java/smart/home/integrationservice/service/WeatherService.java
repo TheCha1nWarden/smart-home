@@ -8,6 +8,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 import smart.home.integrationservice.model.WeatherRequest;
 import smart.home.integrationservice.model.WeatherResponse;
 
+import java.util.Optional;
+
 @Service
 public class WeatherService {
 
@@ -26,21 +28,25 @@ public class WeatherService {
     @Autowired
     private WebClient webClient;
 
-    public WeatherResponse getWeather(WeatherRequest weatherRequest) {
-        JsonNode weatherJson = webClient.get()
-                .uri(uriBuilder -> uriBuilder
-                        .path(apiWeatherPath)
-                        .queryParam("lat", weatherRequest.getLatitude())
-                        .queryParam("lon", weatherRequest.getLongitude())
-                        .queryParam("appid", apiKey)
-                        .queryParam("lang", apiWeatherLang)
-                        .queryParam("units", apiWeatherUnits)
-                        .queryParam("mode", weatherRequest.getFormat())
-                        .build())
-                .retrieve()
-                .bodyToMono(JsonNode.class)
-                .block();
-        return parseWeatherResponse(weatherJson);
+    public Optional<WeatherResponse> getWeather(WeatherRequest weatherRequest) {
+        try {
+            JsonNode weatherJson = webClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path(apiWeatherPath)
+                            .queryParam("lat", weatherRequest.getLatitude())
+                            .queryParam("lon", weatherRequest.getLongitude())
+                            .queryParam("appid", apiKey)
+                            .queryParam("lang", apiWeatherLang)
+                            .queryParam("units", apiWeatherUnits)
+                            .queryParam("mode", weatherRequest.getFormat())
+                            .build())
+                    .retrieve()
+                    .bodyToMono(JsonNode.class)
+                    .block();
+            return Optional.of(parseWeatherResponse(weatherJson));
+        } catch (Exception e) {
+            return Optional.empty();
+        }
     }
 
     private WeatherResponse parseWeatherResponse(JsonNode weatherJson) {

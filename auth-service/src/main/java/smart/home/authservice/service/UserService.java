@@ -3,6 +3,7 @@ package smart.home.authservice.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import smart.home.authservice.model.RegisterUserRequest;
 import smart.home.authservice.model.User;
 import smart.home.authservice.repository.UserRepository;
 
@@ -18,13 +19,13 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     // Регистрация нового пользователя
-    public User registerUser(String username, String password, String email, String role) {
+    public User registerUser(RegisterUserRequest registerUserRequest) {
         User user = new User();
-        user.setUsername(username);
+        user.setUsername(registerUserRequest.getUsername());
         // Хеширование пароля перед сохранением в БД
-        user.setPassword(passwordEncoder.encode(password));
-        user.setEmail(email);
-        user.setRole(role);
+        user.setPassword(passwordEncoder.encode(registerUserRequest.getPassword()));
+        user.setEmail(registerUserRequest.getEmail());
+        user.setRole(registerUserRequest.getRole());
         return userRepository.save(user);
     }
 
