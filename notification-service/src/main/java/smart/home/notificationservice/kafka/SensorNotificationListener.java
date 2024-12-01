@@ -13,7 +13,7 @@ public class SensorNotificationListener {
     @Autowired
     private NotificationService notificationService;
 
-    @KafkaListener(topics = "sensor-notifications", groupId = "sensor-notifications-group")
+    @KafkaListener(topics = "${KAFKA_TOPIC_SENSOR_NOTIFICATION}", groupId = "${KAFKA_CONSUMER_GROUP_ID}")
     public void listenSensorNotification(@Payload SensorNotification notification) {
         notificationService.sendSensorNotification(notification);
     }

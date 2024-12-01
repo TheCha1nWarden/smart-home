@@ -12,7 +12,7 @@ import java.util.Date;
 public class JwtUtil {
 
     // Секретный ключ для подписи токена
-    @Value("${jwt.secret.key}")
+    @Value("${JWT_SECRET_KEY}")
     private String secretKey;
 
     private final long shortExpirationTime = 900000; // Время действия короткого токена (15 минуты)
