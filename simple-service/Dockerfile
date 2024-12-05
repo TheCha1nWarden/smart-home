@@ -1,6 +1,5 @@
-FROM --platform=linux/amd64 ubuntu:20.04
-
-RUN apt-get update && apt-get install -y openjdk-17-jre
+# Используем базовый образ с OpenJDK 17
+FROM openjdk:17
 
 # Устанавливаем рабочую директорию
 WORKDIR /app
