@@ -5,6 +5,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import smart.home.authservice.model.RegisterUserRequest;
 import smart.home.authservice.model.User;
+import smart.home.authservice.model.mapper.UserDto;
+import smart.home.authservice.model.mapper.UserDtoMapper;
 import smart.home.authservice.repository.UserRepository;
 
 import java.util.Optional;
@@ -17,6 +19,9 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private UserDtoMapper mapper;
 
     // Регистрация нового пользователя
     public User registerUser(RegisterUserRequest registerUserRequest) {
@@ -34,8 +39,8 @@ public class UserService {
         return userRepository.findByUsername(username);
     }
 
-    public Optional<User> findById(Long id) {
-        return userRepository.findById(id);
+    public Optional<UserDto> findById(Long id) {
+        return userRepository.findById(id).map(mapper::map);
     }
 
     public Optional<Long> findIdByUsername(String username) {
