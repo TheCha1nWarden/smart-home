@@ -13,7 +13,7 @@ import smart.home.authservice.service.UserService;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
 
     @Autowired
