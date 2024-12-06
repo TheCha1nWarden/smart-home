@@ -23,7 +23,7 @@ public class SecurityConfig {
         // Используем Customizer для настройки CSRF
         http.csrf().disable() // Хранение CSRF токена в cookies
                 .authorizeRequests(auth -> auth
-                        .requestMatchers("/auth/*").permitAll()  // Разрешение доступа к /auth/** для всех
+                        .requestMatchers("/api/auth/*").permitAll()  // Разрешение доступа к /auth/** для всех
                         .anyRequest().authenticated()  // Требование аутентификации для всех остальных запросов
                 );
 
