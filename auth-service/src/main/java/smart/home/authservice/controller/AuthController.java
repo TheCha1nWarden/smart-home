@@ -7,9 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import smart.home.authservice.model.LoginUserRequest;
-import smart.home.authservice.model.RegisterUserRequest;
-import smart.home.authservice.model.User;
+import smart.home.authservice.model.*;
 import smart.home.authservice.security.JwtUtil;
 import smart.home.authservice.service.UserService;
 
@@ -30,15 +28,17 @@ public class AuthController {
 
     // Регистрация нового пользователя
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterUserRequest registerUserRequest) {
+    public ResponseEntity<RegisterUserResponse> register(@RequestBody RegisterUserRequest registerUserRequest) {
         // Создание нового пользователя
         User user = userService.registerUser(registerUserRequest);
-        return ResponseEntity.ok("User registered successfully: " + user.getUsername());
+        String token = jwtUtil.generateToken(user.getUsername(), user.getRole(),
+                registerUserRequest.isRememberUserFlag());
+        return ResponseEntity.ok(new RegisterUserResponse(user.getId(), "Bearer " + token));
     }
 
     // Аутентификация пользователя и генерация JWT токена
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginUserRequest loginUserRequest) {
+    public ResponseEntity<LoginUserResponse> login(@RequestBody LoginUserRequest loginUserRequest) {
         Optional<User> userOptional = userService.findByUsername(loginUserRequest.getUsername());
 
         // Проверка существования пользователя и соответствия пароля
@@ -46,9 +46,9 @@ public class AuthController {
             // Генерация JWT токена при успешной аутентификации
             String token = jwtUtil.generateToken(loginUserRequest.getUsername(), userOptional.get().getRole(),
                     loginUserRequest.isRememberUserFlag());
-            return ResponseEntity.ok("Bearer " + token);
+            return ResponseEntity.ok(new LoginUserResponse(userOptional.get().getId(),"Bearer " + token));
         } else {
-            return ResponseEntity.status(401).body("Invalid credentials");
+            return ResponseEntity.status(401).build();
         }
     }
 }

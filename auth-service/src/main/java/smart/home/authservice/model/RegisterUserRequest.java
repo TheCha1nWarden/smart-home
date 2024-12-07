@@ -8,4 +8,5 @@ public class RegisterUserRequest {
     private String password;
     private String email;
     private String role;
+    private boolean rememberUserFlag;
 }
