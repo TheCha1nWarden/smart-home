@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: smarthome-integration-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: smarthome-integration-service
+  template:
+    metadata:
+      labels:
+        app: smarthome-integration-service
+    spec:
+      containers:
+        - name: integration-service
+          image: cr.selcloud.ru/smart-home/integration-service:1
+          ports:
+            - containerPort: 8084
+          env:
+            - name: JWT_SECRET_KEY
+              value: "yourSecretasdqewjldsandmhqqwjendsbahjsdbasmd"
+            - name: WEATHER_API_KEY
+              value: "f3304718673143573a03db8b5ec68485"
+            - name: WEATHER_API_BASEURL
+              value: "https://api.openweathermap.org"
+            - name: WEATHER_API_PATH
+              value: "/data/2.5/weather"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: smarthome-integration-service
+spec:
+  ports:
+    - port: 8084
+      targetPort: 8084
+  selector:
+    app: smarthome-integration-service

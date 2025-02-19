@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: smarthome-device-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: smarthome-device-service
+  template:
+    metadata:
+      labels:
+        app: smarthome-device-service
+    spec:
+      containers:
+        - name: device-service
+          image: cr.selcloud.ru/smart-home/device-service:2
+          ports:
+            - containerPort: 8081
+          env:
+            - name: JWT_SECRET_KEY
+              value: "yourSecretasdqewjldsandmhqqwjendsbahjsdbasmd"
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:postgresql://smarthome-postgres:5432/devicedb"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "postgres"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: "root"
+            - name: TOPIC_NOTIFICATION
+              value: "device-notifications"
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              value: "master.2eedf705-f586-4e28-9495-f80bfb52239d.c.dbaas.selcloud.ru:9092"
+            - name: KAFKA_SECURITY_PROTOCOL
+              value: "SASL_PLAINTEXT"
+            - name: KAFKA_SASL_MECHANISM
+              value: "SCRAM-SHA-512"
+            - name: KAFKA_USER
+              value: "admin"
+            - name: KAFKA_PASSWORD
+              value: "xVKDs0ws0R6W"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: smarthome-device-service
+spec:
+  ports:
+    - port: 8081
+      targetPort: 8081
+  selector:
+    app: smarthome-device-service

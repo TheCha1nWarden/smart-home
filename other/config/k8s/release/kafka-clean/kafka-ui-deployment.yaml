@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: smarthome-kafka-ui
+  labels:
+    app: smarthome-kafka-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: smarthome-kafka-ui
+  template:
+    metadata:
+      labels:
+        app: smarthome-kafka-ui
+    spec:
+      containers:
+        - name: kafka-ui
+          image: cr.selcloud.ru/smart-home/kafka-ui:1
+          ports:
+            - containerPort: 8080
+          env:
+            - name: KAFKA_CLUSTERS_0_NAME
+              value: "local"
+            - name: KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS
+              value: "master.2eedf705-f586-4e28-9495-f80bfb52239d.c.dbaas.selcloud.ru:9092"
+            - name: KAFKA_CLUSTERS_0_PROPERTIES_SECURITY_PROTOCOL
+              value: "SASL_PLAINTEXT"
+            # Механизм аутентификации SASL
+            - name: KAFKA_CLUSTERS_0_PROPERTIES_SASL_MECHANISM
+              value: "SCRAM-SHA-512"
+            # Конфигурация SASL JAAS для SCRAM-SHA-512
+            - name: KAFKA_CLUSTERS_0_PROPERTIES_SASL_JAAS_CONFIG
+              value: "org.apache.kafka.common.security.scram.ScramLoginModule required username=\"admin\" password=\"xVKDs0ws0R6W\";"
+            
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: smarthome-kafka-ui
+  labels:
+    app: smarthome-kafka-ui
+spec:
+  ports:
+    - port: 8090
+      targetPort: 8080
+  selector:
+    app: smarthome-kafka-ui

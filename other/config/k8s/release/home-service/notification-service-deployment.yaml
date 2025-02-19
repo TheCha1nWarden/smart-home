@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: smarthome-notification-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: smarthome-notification-service
+  template:
+    metadata:
+      labels:
+        app: smarthome-notification-service
+    spec:
+      containers:
+        - name: notification-service
+          image: cr.selcloud.ru/smart-home/notification-service:1
+          ports:
+            - containerPort: 8083
+          env:
+            - name: JWT_SECRET_KEY
+              value: "yourSecretasdqewjldsandmhqqwjendsbahjsdbasmd"
+            - name: SPRING_MAIL_HOST
+              value: "smtp.gmail.com"
+            - name: SPRING_MAIL_PORT
+              value: "587"
+            - name: SPRING_MAIL_USERNAME
+              value: "home.zen152@gmail.com"
+            - name: SPRING_MAIL_PASSWORD
+              value: "dzqc zljj kwzb ugrx"
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              value: "master.2eedf705-f586-4e28-9495-f80bfb52239d.c.dbaas.selcloud.ru:9092"
+            - name: KAFKA_TOPIC_SENSOR_NOTIFICATION
+              value: "sensor-notifications"
+            - name: KAFKA_CONSUMER_GROUP_ID
+              value: "sensor-notifications-group"
+            - name: KAFKA_SECURITY_PROTOCOL
+              value: "SASL_PLAINTEXT"
+            - name: KAFKA_SASL_MECHANISM
+              value: "SCRAM-SHA-512"
+            - name: KAFKA_USER
+              value: "admin"
+            - name: KAFKA_PASSWORD
+              value: "xVKDs0ws0R6W"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: smarthome-notification-service
+spec:
+  ports:
+    - port: 8083
+      targetPort: 8083
+  selector:
+    app: smarthome-notification-service

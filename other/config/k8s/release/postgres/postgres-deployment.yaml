@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: smarthome-postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: smarthome-postgres
+  template:
+    metadata:
+      labels:
+        app: smarthome-postgres
+    spec:
+      containers:
+        - name: smarthome-postgres
+          image: cr.selcloud.ru/smart-home/postgres:1
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              value: "postgres"
+            - name: POSTGRES_PASSWORD
+              value: "root"
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata/smarthome
+          volumeMounts:
+            - name: postgresql-storage
+              mountPath: /var/lib/postgresql/data/pgdata
+      volumes:
+        - name: postgresql-storage
+          persistentVolumeClaim:
+            claimName: postgres-pv-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: smarthome-postgres
+spec:
+  ports:
+    - port: 5432
+      targetPort: 5432
+  selector:
+    app: smarthome-postgres

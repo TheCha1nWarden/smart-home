@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: smarthome-zookeeper
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: smarthome-zookeeper
+  template:
+    metadata:
+      labels:
+        app: smarthome-zookeeper
+    spec:
+      initContainers:
+        - name: init-chown
+          image: busybox
+          command: 
+            - sh
+            - "-c"
+            - |
+              chown -R 1000:1000 /var/lib/zookeeper/smarthome
+          volumeMounts:
+            - name: zookeeper-data
+              mountPath: /var/lib/zookeeper/smarthome
+      containers:
+        - name: zookeeper
+          image: cr.selcloud.ru/smart-home/zookeeper:1
+          ports:
+            - containerPort: 2181
+          env:
+            - name: ZOOKEEPER_CLIENT_PORT
+              value: "2181"
+            - name: ZOOKEEPER_TICK_TIME
+              value: "2000"
+            - name: ZOOKEEPER_DATA_DIR
+              value: "/var/lib/zookeeper/smarthome/data"
+            - name: ZOOKEEPER_DATA_LOG_DIR
+              value: "/var/lib/zookeeper/smarthome/log"
+          volumeMounts:
+            - name: zookeeper-data
+              mountPath: /var/lib/zookeeper/smarthome
+      volumes:
+        - name: zookeeper-data
+          persistentVolumeClaim:
+            claimName: zookeeper-pv-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: smarthome-zookeeper
+spec:
+  ports:
+    - port: 2181
+      targetPort: 2181
+  selector:
+    app: smarthome-zookeeper

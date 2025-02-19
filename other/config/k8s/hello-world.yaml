@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-world-pod
+  labels:
+    app: hello-world-service
+spec:
+  containers:
+    - name: hello-world
+      image: cr.selcloud.ru/smart-home/hello-world

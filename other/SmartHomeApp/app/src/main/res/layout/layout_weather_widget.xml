@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:background="@color/white"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@drawable/semi_transparent_background">
+
+        <!-- Название города -->
+        <TextView
+            android:id="@+id/tvWidgetLocationName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Город"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/white" />
+
+        <!-- Описание погоды -->
+        <TextView
+            android:id="@+id/tvWidgetDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Описание"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:layout_marginTop="4dp" />
+
+        <!-- Температура и как чувствуется -->
+        <TextView
+            android:id="@+id/tvWidgetTemperature"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Температура: 0.0°C, Ощущается как: 0.0°C"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/white" />
+
+        <!-- Влажность, давление -->
+        <TextView
+            android:id="@+id/tvWidgetDetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Давление: 0 гПа, Влажность: 0%"
+            android:textSize="14sp"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/white" />
+
+        <!-- Видимость -->
+        <TextView
+            android:id="@+id/tvWidgetVisibility"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Видимость: 0 м"
+            android:textSize="14sp"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/white" />
+
+        <!-- Ветер -->
+        <TextView
+            android:id="@+id/tvWidgetWind"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Скорость ветра: 0 м/с"
+            android:textSize="14sp"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

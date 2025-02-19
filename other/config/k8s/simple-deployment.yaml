@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: smarthome-simple-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: smarthome-simple-service
+  template:
+    metadata:
+      labels:
+        app: smarthome-simple-service
+    spec:
+      containers:
+        - name: simple-service
+          image: cr.selcloud.ru/smart-home/simple-service:2
+          ports:
+            - containerPort: 8080

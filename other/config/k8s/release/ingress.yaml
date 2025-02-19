@@ -1,0 +1,65 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: smarthome-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:
+      - path: /api/devices
+        pathType: Prefix
+        backend:
+          service:
+            name: smarthome-device-service
+            port:
+              number: 8081
+      - path: /api/sensors
+        pathType: Prefix
+        backend:
+          service:
+            name: smarthome-device-service
+            port:
+              number: 8081
+      - path: /api/auth
+        pathType: Prefix
+        backend:
+          service:
+            name: smarthome-auth-service
+            port:
+              number: 8082
+      - path: /api/users
+        pathType: Prefix
+        backend:
+          service:
+            name: smarthome-auth-service
+            port:
+              number: 8082
+      - path: /api/email
+        pathType: Prefix
+        backend:
+          service:
+            name: smarthome-notification-service
+            port:
+              number: 8083
+      - path: /api/notifications
+        pathType: Prefix
+        backend:
+          service:
+            name: smarthome-notification-service
+            port:
+              number: 8083
+      - path: /api/weather
+        pathType: Prefix
+        backend:
+          service:
+            name: smarthome-integration-service
+            port:
+              number: 8084
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: smarthome-kafka-ui
+            port:
+              number: 8090        

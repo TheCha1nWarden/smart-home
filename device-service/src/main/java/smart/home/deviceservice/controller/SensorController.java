@@ -3,10 +3,7 @@ package smart.home.deviceservice.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import smart.home.deviceservice.model.Device;
 import smart.home.deviceservice.model.Sensor;
-import smart.home.deviceservice.model.Status;
-import smart.home.deviceservice.service.DeviceService;
 import smart.home.deviceservice.service.SensorService;
 
 import java.util.List;

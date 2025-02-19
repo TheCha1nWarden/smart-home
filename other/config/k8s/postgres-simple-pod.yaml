@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: smarthome-postgres-pod
+  labels:
+    app: smarthome-postgres
+spec:
+  containers:
+    - name: smarthome-postgres
+      image: cr.selcloud.ru/smart-home/postgres:1
+      ports:
+        - containerPort: 5432
+      env:
+        - name: POSTGRES_USER
+          value: "postgres"
+        - name: POSTGRES_PASSWORD
+          value: "root"

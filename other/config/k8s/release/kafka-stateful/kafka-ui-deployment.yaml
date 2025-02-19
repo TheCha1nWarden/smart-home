@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: smarthome-kafka-ui
+  labels:
+    app: smarthome-kafka-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: smarthome-kafka-ui
+  template:
+    metadata:
+      labels:
+        app: smarthome-kafka-ui
+    spec:
+      containers:
+        - name: kafka-ui
+          image: cr.selcloud.ru/smart-home/kafka-ui:1
+          ports:
+            - containerPort: 8080
+          env:
+            - name: KAFKA_CLUSTERS_0_NAME
+              value: "local"
+            - name: KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS
+              value: "master.72c58ccf-6fd9-4f0c-8d76-9fe6c78e919e.c.dbaas.selcloud.ru"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: smarthome-kafka-ui
+  labels:
+    app: smarthome-kafka-ui
+spec:
+  ports:
+    - port: 8090
+      targetPort: 8080
+  selector:
+    app: smarthome-kafka-ui

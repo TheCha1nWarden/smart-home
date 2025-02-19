@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: smarthome-auth-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: smarthome-auth-service
+  template:
+    metadata:
+      labels:
+        app: smarthome-auth-service
+    spec:
+      containers:
+        - name: auth-service
+          image: cr.selcloud.ru/smart-home/auth-service:8
+          ports:
+            - containerPort: 8082
+          env:
+            - name: JWT_SECRET_KEY
+              value: "yourSecretasdqewjldsandmhqqwjendsbahjsdbasmd"
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:postgresql://smarthome-postgres:5432/authdb"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "postgres"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: "root"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: smarthome-auth-service
+spec:
+  ports:
+    - port: 8082
+      targetPort: 8082
+  selector:
+    app: smarthome-auth-service
